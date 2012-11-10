@@ -1,0 +1,239 @@
+diff -up ../dwm-5.8.2-0/config.def.h ./config.def.h
+--- ../dwm-5.8.2-0/config.def.h	2010-06-10 22:47:51.660949000 +0200
++++ ./config.def.h	2010-06-11 00:18:55.082073000 +0200
+@@ -16,6 +16,9 @@ static const Bool topbar            = Tr
+ /* tagging */
+ static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+ 
++/* include(s) defining functions */
++#include "keymodes.pre.h"
++
+ static const Rule rules[] = {
+ 	/* class      instance    title       tags mask     isfloating   monitor */
+ 	{ "Gimp",     NULL,       NULL,       0,            True,        -1 },
+@@ -47,9 +50,11 @@ static const Layout layouts[] = {
+ /* commands */
+ static const char *dmenucmd[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
+ static const char *termcmd[]  = { "uxterm", NULL };
++static const char *helpcmd[]  = { "uxterm", "-e", "man", "dwm", NULL };
+ 
+ static Key keys[] = {
+ 	/* modifier                     key        function        argument */
++	{ MODKEY,                       XK_Escape, setkeymode,     {.ui = COMMANDMODE} },
+ 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
+ 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
+ 	{ MODKEY,                       XK_b,      togglebar,      {0} },
+@@ -83,6 +88,30 @@ static Key keys[] = {
+ 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+ };
+ 
++static Key cmdkeys[] = {
++	/* modifier                    keys                     function         argument */
++	{ 0,                           XK_Escape,               clearcmd,        {0} },
++	{ ControlMask,                 XK_c,                    clearcmd,        {0} },
++	{ 0,                           XK_i,                    setkeymode,      {.ui = INSERTMODE} },
++};
++static Command commands[] = {
++	/* modifier (4 keys)                          keysyms (4 keys)                                function         argument */
++	{ {ControlMask, ShiftMask,  0,         0},    {XK_w,      XK_h,     0,         0},            setlayout,       {.v = &layouts[0]} },
++	{ {ControlMask, 0,          0,         0},    {XK_w,      XK_o,     0,         0},            setlayout,       {.v = &layouts[2]} },
++	{ {ControlMask, ShiftMask,  0,         0},    {XK_w,      XK_o,     0,         0},            onlyclient,      {0} },
++	{ {ControlMask, 0,          0,         0},    {XK_w,      XK_v,     0,         0},            setlayout,       {.v = &layouts[0]} },
++	{ {ControlMask, 0,          0,         0},    {XK_w,      XK_less,  0,         0},            setmfact,        {.f = -0.05} },
++	{ {ControlMask, ShiftMask,  0,         0},    {XK_w,      XK_less,  0,         0},            setmfact,        {.f = +0.05} },
++	{ {ControlMask, ShiftMask,  0,         0},    {XK_w,      XK_0,     0,         0},            setmfact,        {.f = +1.50} },
++	{ {ShiftMask,   0,          0,         0},    {XK_period, XK_e,     0,         0},            spawn,           {.v = dmenucmd} },
++	{ {ShiftMask,   0,          0,         0},    {XK_period, XK_o,     0,         0},            spawn,           {.v = dmenucmd} },
++	{ {ShiftMask,   0,          0,         0},    {XK_period, XK_h,     XK_Return, 0},            spawn,           {.v = helpcmd} },
++	{ {ShiftMask,   0,          0,         0},    {XK_period, XK_q,     XK_Return, 0},            quit,            {0} },
++	{ {ShiftMask,   0,          0,         0},    {XK_period, XK_b,     XK_d,      XK_Return},    killclient,      {0} },
++	{ {ShiftMask,   0,          0,         0},    {XK_period, XK_b,     XK_n,      XK_Return},    focusstack,      {.i = +1} },
++	{ {ShiftMask,   0,          ShiftMask, 0},    {XK_period, XK_b,     XK_n,      XK_Return},    focusstack,      {.i = -1} },
++};
++
+ /* button definitions */
+ /* click can be ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
+ static Button buttons[] = {
+@@ -100,3 +129,5 @@ static Button buttons[] = {
+ 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+ };
+ 
++/* include(s) depending on the configuration variables */
++#include "keymodes.post.h"
+diff -up ../dwm-5.8.2-0/dwm.c ./dwm.c
+--- ../dwm-5.8.2-0/dwm.c	2010-06-10 22:47:51.669677000 +0200
++++ ./dwm.c	2010-06-11 00:18:55.106090000 +0200
+@@ -970,7 +970,7 @@ grabbuttons(Client *c, Bool focused) {
+ }
+ 
+ void
+-grabkeys(void) {
++grabdefkeys(void) {
+ 	updatenumlockmask();
+ 	{
+ 		unsigned int i, j;
+@@ -1052,7 +1052,7 @@ isuniquegeom(XineramaScreenInfo *unique,
+ #endif /* XINERAMA */
+ 
+ void
+-keypress(XEvent *e) {
++defkeypress(XEvent *e) {
+ 	unsigned int i;
+ 	KeySym keysym;
+ 	XKeyEvent *ev;
+diff -up ../dwm-5.8.2-0/keymodes.post.h ./keymodes.post.h
+--- ../dwm-5.8.2-0/keymodes.post.h	2010-06-11 00:21:46.000000000 +0200
++++ ./keymodes.post.h	2010-06-11 00:18:55.119222000 +0200
+@@ -0,0 +1,124 @@
++/* See LICENSE file for copyright and license details. */
++/* © 2010 joten <joten@freenet.de> */
++
++/* function implementations */
++void
++clearcmd(const Arg *arg) {
++	unsigned int i;
++
++	for(i = 0; i < LENGTH(cmdkeysym); i++) {
++		cmdkeysym[i] = 0;
++		cmdmod[i] = 0;
++	}
++}
++
++void
++grabkeys(void) {
++	if(keymode == INSERTMODE) {
++		grabdefkeys();
++	} else if(keymode == COMMANDMODE) {
++		XUngrabKey(dpy, AnyKey, AnyModifier, root);
++		XGrabKey(dpy, AnyKey, AnyModifier, root,
++			 True, GrabModeAsync, GrabModeAsync);
++	}
++}
++
++void
++keypress(XEvent *e) {
++	unsigned int i, j;
++	Arg a = {0};
++	Bool ismatch = False, maybematch = False;
++	KeySym keysym;
++	XKeyEvent *ev;
++
++	if(keymode == INSERTMODE)
++		defkeypress(e);
++	else if(keymode == COMMANDMODE) {
++		ev = &e->xkey;
++		keysym = XKeycodeToKeysym(dpy, (KeyCode)ev->keycode, 0);
++		if(keysym < XK_Shift_L || keysym > XK_Hyper_R) {
++			for(i = 0; i < LENGTH(cmdkeys); i++)
++				if(keysym == cmdkeys[i].keysym
++				&& CLEANMASK(cmdkeys[i].mod) == CLEANMASK(ev->state)
++				&& cmdkeys[i].func) {
++					cmdkeys[i].func(&(cmdkeys[i].arg));
++					ismatch = True;
++					break;
++				}
++			if(!ismatch) {
++				for(j = 0; j < LENGTH(cmdkeysym); j++)
++					if(cmdkeysym[j] == 0) {
++						cmdkeysym[j] = keysym;
++						cmdmod[j] = ev->state;
++						break;
++					}
++				for(i = 0; i < LENGTH(commands); i++) {
++					for(j = 0; j < LENGTH(cmdkeysym); j++) {
++						if(cmdkeysym[j] == commands[i].keysym[j] 
++						&& CLEANMASK(cmdmod[j]) == CLEANMASK(commands[i].mod[j]))
++							ismatch = True;
++						else if(cmdkeysym[j] == 0 
++						&& cmdmod[j] == 0) {
++							ismatch = False;
++							maybematch = True;
++							break;
++						} else {
++							ismatch = False;
++							break;
++						}
++					}
++					if(ismatch) {
++						if(commands[i].func)
++							commands[i].func(&(commands[i].arg));
++						clearcmd(&a);
++						break;
++					}
++
++				}
++				if(!maybematch)
++					clearcmd(&a);
++			}
++		}
++	}
++}
++
++void
++onlyclient(const Arg *arg) {
++	Client *c;
++	XEvent ev;
++	
++	if(!selmon->sel)
++		return;
++	for(c = selmon->clients; c; c = c->next)
++		if(c != selmon->sel && ISVISIBLE(c)) {
++			if(isprotodel(c)) {
++				ev.type = ClientMessage;
++				ev.xclient.window = c->win;
++				ev.xclient.message_type = wmatom[WMProtocols];
++				ev.xclient.format = 32;
++				ev.xclient.data.l[0] = wmatom[WMDelete];
++				ev.xclient.data.l[1] = CurrentTime;
++				XSendEvent(dpy, c->win, False, NoEventMask, &ev);
++			}
++			else {
++				XGrabServer(dpy);
++				XSetErrorHandler(xerrordummy);
++				XSetCloseDownMode(dpy, DestroyAll);
++				XKillClient(dpy, c->win);
++				XSync(dpy, False);
++				XSetErrorHandler(xerror);
++				XUngrabServer(dpy);
++			}
++		}
++}
++
++void
++setkeymode(const Arg *arg) {
++	Arg a = {0};
++
++	if(!arg)
++		return;
++	keymode = arg->ui;
++	clearcmd(&a);
++	grabkeys();
++}
+diff -up ../dwm-5.8.2-0/keymodes.pre.h ./keymodes.pre.h
+--- ../dwm-5.8.2-0/keymodes.pre.h	2010-06-11 00:21:38.000000000 +0200
++++ ./keymodes.pre.h	2010-06-11 00:18:55.121759000 +0200
+@@ -0,0 +1,24 @@
++/* See LICENSE file for copyright and license details. */
++/* © 2010 joten <joten@freenet.de> */
++
++#define COMMANDMODE             1
++#define INSERTMODE              2
++
++typedef struct {
++	unsigned int mod[4];
++	KeySym keysym[4];
++	void (*func)(const Arg *);
++	const Arg arg;
++} Command;
++
++/* function declarations */
++static void clearcmd(const Arg *arg);
++static void defkeypress(XEvent *e);
++static void grabdefkeys(void);
++static void onlyclient(const Arg *arg);
++static void setkeymode(const Arg *arg);
++
++/* variables */
++static unsigned int cmdmod[4];
++static unsigned int keymode = COMMANDMODE;
++static KeySym cmdkeysym[4];

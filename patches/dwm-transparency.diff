@@ -1,0 +1,120 @@
+diff -up -x '.*' ../dwm-upstream/config.def.h ./config.def.h
+--- ../dwm-upstream/config.def.h	2010-06-16 22:27:38.000000000 +0200
++++ ./config.def.h	2010-06-16 22:27:39.000000000 +0200
+@@ -10,6 +10,7 @@ static const char selbgcolor[]      = "#
+ static const char selfgcolor[]      = "#ffffff";
+ static const unsigned int borderpx  = 1;        /* border pixel of windows */
+ static const unsigned int snap      = 32;       /* snap pixel */
++static const double shade     = 0.6;      /* opacity of unfocussed clients */
+ static const Bool showbar           = True;     /* False means no bar */
+ static const Bool topbar            = True;     /* False means bottom bar */
+ 
+@@ -17,9 +18,10 @@ static const Bool topbar            = Tr
+ static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+ 
+ static const Rule rules[] = {
+-	/* class      instance    title       tags mask     isfloating   monitor */
+-	{ "Gimp",     NULL,       NULL,       0,            True,        -1 },
+-	{ "Firefox",  NULL,       NULL,       1 << 8,       False,       -1 },
++	/* class      instance    title       tags mask     isfloating   monitor   opacity */
++	{ "Gimp",     NULL,       NULL,       0,            True,        -1,       -1 },
++	{ "Firefox",  NULL,       NULL,       1 << 8,       False,       -1,       -1 },
++	{ "URxvt",    NULL,       NULL,       0,            False,       -1,       0.95  },
+ };
+ 
+ /* layout(s) */
+diff -up -x '.*' ../dwm-upstream/dwm.c ./dwm.c
+--- ../dwm-upstream/dwm.c	2010-06-16 22:27:38.000000000 +0200
++++ ./dwm.c	2010-06-16 22:27:39.000000000 +0200
+@@ -58,7 +58,7 @@
+ enum { CurNormal, CurResize, CurMove, CurLast };        /* cursor */
+ enum { ColBorder, ColFG, ColBG, ColLast };              /* color */
+ enum { NetSupported, NetWMName, NetWMState,
+-       NetWMFullscreen, NetLast };                      /* EWMH atoms */
++       NetWMFullscreen, NetWMWindowOpacity, NetLast };  /* EWMH atoms */
+ enum { WMProtocols, WMDelete, WMState, WMLast };        /* default atoms */
+ enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle,
+        ClkClientWin, ClkRootWin, ClkLast };             /* clicks */
+@@ -93,6 +93,7 @@ struct Client {
+ 	Client *snext;
+ 	Monitor *mon;
+ 	Window win;
++	double opacity;
+ };
+ 
+ typedef struct {
+@@ -149,6 +150,7 @@ typedef struct {
+ 	unsigned int tags;
+ 	Bool isfloating;
+ 	int monitor;
++	double opacity;
+ } Rule;
+ 
+ /* function declarations */
+@@ -179,6 +181,7 @@ static void drawsquare(Bool filled, Bool
+ static void drawtext(const char *text, unsigned long col[ColLast], Bool invert);
+ static void enternotify(XEvent *e);
+ static void expose(XEvent *e);
++static void window_opacity_set(Client *c, double opacity);
+ static void focus(Client *c);
+ static void focusin(XEvent *e);
+ static void focusmon(const Arg *arg);
+@@ -302,6 +305,7 @@ applyrules(Client *c) {
+ 			&& (!r->instance || strstr(instance, r->instance)))
+ 			{
+ 				c->isfloating = r->isfloating;
++				c->opacity = r->opacity;
+ 				c->tags |= r->tags;
+ 				for(m = mons; m && m->num != r->monitor; m = m->next);
+ 				if(m)
+@@ -816,12 +820,26 @@ expose(XEvent *e) {
+ }
+ 
+ void
++window_opacity_set(Client *c, double opacity) {
++	if(opacity >= 0 && opacity <= 1) {
++		unsigned long real_opacity[] = { opacity * 0xffffffff };
++		XChangeProperty(dpy, c->win, netatom[NetWMWindowOpacity], XA_CARDINAL, 32, PropModeReplace, (unsigned char *)real_opacity, 1);
++	}
++	else
++		XDeleteProperty(dpy, c->win, netatom[NetWMWindowOpacity]);
++}
++
++void
+ focus(Client *c) {
+ 	if(!c || !ISVISIBLE(c))
+ 		for(c = selmon->stack; c && !ISVISIBLE(c); c = c->snext);
+ 	/* was if(selmon->sel) */
+ 	if(selmon->sel && selmon->sel != c)
+ 		unfocus(selmon->sel, False);
++
++	if(selmon->sel && c!=selmon->sel && c && (!root || (selmon->sel->win!=root && c->win!=root)) ) window_opacity_set(selmon->sel, shade);
++	if(c && c!=selmon->sel && (!root || (c->win!=root)) ) window_opacity_set(c, c->opacity);
++
+ 	if(c) {
+ 		if(c->mon != selmon)
+ 			selmon = c->mon;
+@@ -837,6 +855,7 @@ focus(Client *c) {
+ 		XSetInputFocus(dpy, root, RevertToPointerRoot, CurrentTime);
+ 	selmon->sel = c;
+ 	drawbars();
++	if(c) window_opacity_set(c, c->opacity);
+ }
+ 
+ void
+@@ -1106,6 +1125,7 @@ manage(Window w, XWindowAttributes *wa)
+ 	updatetitle(c);
+ 	if(XGetTransientForHint(dpy, w, &trans))
+ 		t = wintoclient(trans);
++	c->opacity=-1;
+ 	if(t) {
+ 		c->mon = t->mon;
+ 		c->tags = t->tags;
+@@ -1537,6 +1557,7 @@ setup(void) {
+ 	wmatom[WMState] = XInternAtom(dpy, "WM_STATE", False);
+ 	netatom[NetSupported] = XInternAtom(dpy, "_NET_SUPPORTED", False);
+ 	netatom[NetWMName] = XInternAtom(dpy, "_NET_WM_NAME", False);
++	netatom[NetWMWindowOpacity] = XInternAtom(dpy, "_NET_WM_WINDOW_OPACITY", False);
+ 	netatom[NetWMState] = XInternAtom(dpy, "_NET_WM_STATE", False);
+ 	netatom[NetWMFullscreen] = XInternAtom(dpy, "_NET_WM_STATE_FULLSCREEN", False);
+ 	/* init cursors */

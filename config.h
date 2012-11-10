@@ -109,9 +109,7 @@ static Key keys[] = {
     TAGKEYS(                        XK_8,                       7)
     TAGKEYS(                        XK_9,                       8)
     // quit X
-    { MODKEY|ShiftMask,             XK_q,       spawn,          {.v = quit_cmd} },
-    // reload X
-    { MODKEY|ShiftMask,             XK_r,       quit,           {0} },
+    { MODKEY|ShiftMask,             XK_q,       quit,           {0} },
 };
 
 /* button definitions */
