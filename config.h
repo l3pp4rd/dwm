@@ -8,10 +8,15 @@ static const char normfgcolor[]     = "#bbbbbb";
 static const char selbordercolor[]  = "#005577";
 static const char selbgcolor[]      = "#005577";
 static const char selfgcolor[]      = "#eeeeee";
+
 static const unsigned int borderpx  = 0;        /* border pixel of windows */
 static const unsigned int snap      = 0;       /* snap pixel */
+
 static const Bool showbar           = True;     /* False means no bar */
 static const Bool topbar            = True;     /* False means bottom bar */
+
+static const unsigned int systrayspacing = 2;   /* systray spacing */
+static const Bool showsystray       = True;     /* False means no systray */
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
@@ -58,7 +63,7 @@ static const char *touchpad_toggle_cmd[] = { "/bin/zsh", "-c", "/home/gedi/scrip
 static const char *print_screen_cmd[] = { "scrot", "'%Y-%m-%d-%H%M%S_$wx$h.png'", "-e", "'mv $f /home/gedi/images/screenshots'", NULL };
 static const char *print_screen_area_cmd[] = { "sleep 0.2;", "scrot", "'%Y-%m-%d-%H%M%S_$wx$h.png'", "-e", "'mv $f /home/gedi/images/screenshots'", "-s", NULL };
 
-static const char *quit_cmd[]  = { "/bin/zsh", "-c", "killall", "startdwm", NULL };
+/* static const char *quit_cmd[]  = { "/bin/zsh", "-c", "killall", "startdwm", NULL }; */
 
 static Key keys[] = {
     /* modifier                     key        function        argument */
