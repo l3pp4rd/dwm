@@ -273,7 +273,6 @@ static void updatebars(void);
 static void updateclientlist(void);
 static void updatenumlockmask(void);
 static void updatesizehints(Client *c);
-static void updatestatus(void);
 static void updatesystray(void);
 static void updatesystrayicongeom(Client *i, int w, int h);
 static void updatesystrayiconstate(Client *i, XPropertyEvent *ev);
@@ -1432,9 +1431,7 @@ propertynotify(XEvent *e) {
         resizebarwin(selmon);
         updatesystray();
     }
-    if((ev->window == root) && (ev->atom == XA_WM_NAME))
-        updatestatus();
-    else if(ev->state == PropertyDelete)
+    if(ev->state == PropertyDelete)
         return; /* ignore */
     else if((c = wintoclient(ev->window))) {
         switch(ev->atom) {
@@ -1823,7 +1820,6 @@ setup(void) {
     updatesystray();
     /* init bars */
     updatebars();
-    updatestatus();
     /* EWMH support per view */
     XChangeProperty(dpy, root, netatom[NetSupported], XA_ATOM, 32,
             PropModeReplace, (unsigned char *) netatom, NetLast);
@@ -2259,13 +2255,6 @@ updatetitle(Client *c) {
         gettextprop(c->win, XA_WM_NAME, c->name, sizeof c->name);
     if(c->name[0] == '\0') /* hack to mark broken clients */
         strcpy(c->name, broken);
-}
-
-void
-updatestatus(void) {
-    if(!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)))
-        strcpy(stext, "dwm-"VERSION);
-    drawbar(selmon);
 }
 
 void

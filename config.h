@@ -2,9 +2,10 @@
 
 /* appearance */
 static const char font[]            = "InconsolataSansMono:size=11";
+
 static const char normbordercolor[] = "#444444";
-static const char normbgcolor[]     = "#222222";
-static const char normfgcolor[]     = "#bbbbbb";
+static const char normbgcolor[]     = "#073642";
+static const char normfgcolor[]     = "#839496";
 static const char selbordercolor[]  = "#005577";
 static const char selbgcolor[]      = "#005577";
 static const char selfgcolor[]      = "#eeeeee";
@@ -19,13 +20,13 @@ static const unsigned int systrayspacing = 2;   /* systray spacing */
 static const Bool showsystray       = True;     /* False means no systray */
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "1", "2", "3", "4", "5" };
 
 static const Rule rules[] = {
     /* class            instance    title       tags mask     isfloating   monitor */
-    { "Gimp",           NULL,       NULL,       1 << 7,       True,        -1 },
+    { "Gimp",           NULL,       NULL,       1 << 2,       True,        -1 },
     { "Firefox",        NULL,       NULL,       1 << 0,       False,       -1 },
-    { "Thunderbird",    NULL,       NULL,       1 << 8,       False,       -1 },
+    { "Thunderbird",    NULL,       NULL,       1 << 3,       False,       -1 },
     { "Skype",          NULL,       NULL,       1 << 4,       True,        -1 },
 };
 
@@ -55,13 +56,13 @@ static const Layout layouts[] = {
 /* commands */
 static const char *dmenu_cmd[] = { "/bin/zsh", "-c", "/home/gedi/scripts/path_dmenu", NULL };
 static const char *term_cmd[]  = { "urxvtc", "-e", "zsh", "-c", "tmux", NULL };
-static const char *sleep_cmd[]  = { "/bin/zsh", "-c", "'sudo /usr/sbin/pm-suspend'", NULL };
-static const char *email_cmd[]  = { "/bin/zsh", "-c", "'/home/gedi/scripts/email/check_mailbox.sh /home/gedi/accounts.dat'", NULL };
+static const char *sleep_cmd[]  = { "/bin/zsh", "-c", "sudo /usr/sbin/pm-suspend", NULL };
+static const char *email_cmd[]  = { "/bin/zsh", "-c", "/home/gedi/scripts/email/check_mailbox.sh /home/gedi/accounts.dat", NULL };
 static const char *alsa_cmd[]  = { "urxvtc", "-e", "amixer", NULL };
 static const char *ranger_cmd[]  = { "urxvtc", "-e", "ranger", NULL };
 static const char *touchpad_toggle_cmd[] = { "/bin/zsh", "-c", "/home/gedi/scripts/touchpad_toggle", NULL };
-static const char *print_screen_cmd[] = { "scrot", "'%Y-%m-%d-%H%M%S_$wx$h.png'", "-e", "'mv $f /home/gedi/images/screenshots'", NULL };
-static const char *print_screen_area_cmd[] = { "sleep 0.2;", "scrot", "'%Y-%m-%d-%H%M%S_$wx$h.png'", "-e", "'mv $f /home/gedi/images/screenshots'", "-s", NULL };
+static const char *print_screen_cmd[] = { "scrot", "%Y-%m-%d-%H%M%S_$wx$h.png", "-e", "mv $f /home/gedi/images/screenshots", NULL };
+static const char *print_screen_area_cmd[] = { "/bin/zsh", "-c", "/home/gedi/scripts/area_screenshot", NULL };
 
 static const char *quit_cmd[]  = { "/bin/zsh", "-c", "killall startdwm", NULL };
 
