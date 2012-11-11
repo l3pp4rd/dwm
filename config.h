@@ -63,7 +63,7 @@ static const char *touchpad_toggle_cmd[] = { "/bin/zsh", "-c", "/home/gedi/scrip
 static const char *print_screen_cmd[] = { "scrot", "'%Y-%m-%d-%H%M%S_$wx$h.png'", "-e", "'mv $f /home/gedi/images/screenshots'", NULL };
 static const char *print_screen_area_cmd[] = { "sleep 0.2;", "scrot", "'%Y-%m-%d-%H%M%S_$wx$h.png'", "-e", "'mv $f /home/gedi/images/screenshots'", "-s", NULL };
 
-/* static const char *quit_cmd[]  = { "/bin/zsh", "-c", "killall", "startdwm", NULL }; */
+static const char *quit_cmd[]  = { "/bin/zsh", "-c", "killall startdwm", NULL };
 
 static Key keys[] = {
     /* modifier                     key        function        argument */
@@ -114,7 +114,8 @@ static Key keys[] = {
     TAGKEYS(                        XK_8,                       7)
     TAGKEYS(                        XK_9,                       8)
     // quit X
-    { MODKEY|ShiftMask,             XK_q,       quit,           {0} },
+    { MODKEY|ShiftMask,             XK_q,       spawn,          {.v = quit_cmd } }, /* does not quit clean, but restart works perfect */
+    { MODKEY|ControlMask,           XK_r,       quit,           {0} },
 };
 
 /* button definitions */
