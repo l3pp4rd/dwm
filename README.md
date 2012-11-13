@@ -12,7 +12,7 @@ a single file in 2000 lines of code, which is directly using Xorg.
 
 ## Screenshot of my terminal
 
-![My image](l3pp4rd.github.com/dwm/screen.png)
+![My image](https://raw.github.com/l3pp4rd/dwm/master/screen.png)
 
 ## Requirements
 
