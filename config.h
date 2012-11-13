@@ -80,7 +80,10 @@ static Key keys[] = {
     { MODKEY,                       XK_e,       spawn,          {.v = email_cmd } },
     { MODKEY,                       XK_a,       spawn,          {.v = alsa_cmd } },
     { MODKEY,                       XK_w,       spawn,          {.v = ranger_cmd } },
-    { 0,                            XK_F12,     spawn,          {.v = touchpad_toggle_cmd } },
+    { 0,                            XK_F12,     spawn,          {.v = mpc_next } },
+    { 0,                            XK_F11,     spawn,          {.v = mpc_toggle } },
+    { 0,                            XK_F10,     spawn,          {.v = mpc_prev } },
+    { 0,                            XK_F9,      spawn,          {.v = touchpad_toggle_cmd } },
     { MODKEY,                       XK_b,       togglebar,      {0} },
     // print screen
     { 0,                            XK_Print,   spawn,          {.v = print_screen_cmd } },
