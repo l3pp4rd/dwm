@@ -54,40 +54,29 @@ static const Layout layouts[] = {
     { MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
     { MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
 
-/* helper for spawning shell commands in the pre dwm-5.0 fashion */
-#define SHCMD(cmd) { .v = (const char*[]){ "/bin/zsh", "-c", cmd, NULL } }
+#define CMD(cmd) { .v = (const char*[]){ "/bin/zsh", "-c", cmd, NULL } }
 
 /* commands */
-static const char *dmenu_cmd[] = { "/bin/zsh", "-c", "/home/gedi/scripts/path_dmenu", NULL };
 static const char *term_cmd[]  = { "urxvtc", "-e", "zsh", "-c", "tmux", NULL };
-static const char *sleep_cmd[]  = { "/bin/zsh", "-c", "sudo /usr/sbin/pm-suspend", NULL };
-static const char *email_cmd[]  = { "/bin/zsh", "-c", "/home/gedi/scripts/email/check_mailbox.sh /home/gedi/accounts.dat", NULL };
-static const char *alsa_cmd[]  = { "urxvtc", "-e", "amixer", NULL };
-static const char *ranger_cmd[]  = { "urxvtc", "-e", "ranger", NULL };
-static const char *touchpad_toggle_cmd[] = { "/bin/zsh", "-c", "/home/gedi/scripts/touchpad_toggle", NULL };
 static const char *print_screen_cmd[] = { "scrot", "%Y-%m-%d-%H%M%S_$wx$h.png", "-e", "mv $f /home/gedi/images/screenshots", NULL };
-static const char *print_screen_area_cmd[] = { "/bin/zsh", "-c", "/home/gedi/scripts/area_screenshot", NULL };
-static const char *mpc_next[] = { "mpc", "next", NULL };
-static const char *mpc_prev[] = { "mpc", "prev", NULL };
-static const char *mpc_toggle[] = { "mpc", "toggle", NULL };
 
 static Key keys[] = {
     /* modifier                     key        function        argument */
     // command shortcuts
-    { MODKEY,                       XK_r,       spawn,          {.v = dmenu_cmd } },
+    { MODKEY,                       XK_r,       spawn,          CMD("/home/gedi/scripts/path_dmenu") },
     { MODKEY,                       XK_t,       spawn,          {.v = term_cmd } },
-    { MODKEY,                       XK_s,       spawn,          {.v = sleep_cmd } },
-    { MODKEY,                       XK_e,       spawn,          {.v = email_cmd } },
-    { MODKEY,                       XK_a,       spawn,          {.v = alsa_cmd } },
-    { MODKEY,                       XK_w,       spawn,          {.v = ranger_cmd } },
-    { 0,                            XK_F12,     spawn,          {.v = mpc_next } },
-    { 0,                            XK_F11,     spawn,          {.v = mpc_toggle } },
-    { 0,                            XK_F10,     spawn,          {.v = mpc_prev } },
-    { 0,                            XK_F9,      spawn,          {.v = touchpad_toggle_cmd } },
+    { MODKEY,                       XK_s,       spawn,          CMD("sudo /usr/sbin/pm-suspend") },
+    { MODKEY,                       XK_e,       spawn,          CMD("/home/gedi/scripts/email/check_mailbox.sh /home/gedi/accounts.dat") },
+    { MODKEY,                       XK_a,       spawn,          CMD("urxvtc -e amixer") },
+    { MODKEY,                       XK_w,       spawn,          CMD("urxvtc -e wicd-curses") },
+    { 0,                            XK_F12,     spawn,          CMD("mpc next") },
+    { 0,                            XK_F11,     spawn,          CMD("mpc toggle") },
+    { 0,                            XK_F10,     spawn,          CMD("mpc prev") },
+    { 0,                            XK_F9,      spawn,          CMD("/home/gedi/scripts/touchpad_toggle") },
     { MODKEY,                       XK_b,       togglebar,      {0} },
     // print screen
     { 0,                            XK_Print,   spawn,          {.v = print_screen_cmd } },
-    { ControlMask,                  XK_Print,   spawn,          {.v = print_screen_area_cmd } },
+    { ControlMask,                  XK_Print,   spawn,          CMD("/home/gedi/scripts/area_screenshot") },
     // window navigation
     { MODKEY,                       XK_j,       focusstack,     {.i = +1 } },
     { MODKEY,                       XK_Tab,     focusstack,     {.i = +1 } },
