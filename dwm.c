@@ -289,6 +289,7 @@ static int xerrorstart(Display *dpy, XErrorEvent *ee);
 static void zoom(const Arg *arg);
 
 /* variables */
+static int exit_code = EXIT_SUCCESS;
 static Systray *systray = NULL;
 static unsigned long systrayorientation = _NET_SYSTEM_TRAY_ORIENTATION_HORZ;
 static const char broken[] = "broken";
@@ -1461,6 +1462,9 @@ propertynotify(XEvent *e) {
 
 void
 quit(const Arg *arg) {
+    if (arg->i) {
+        exit_code = arg->i;
+    }
     running = False;
 }
 
@@ -2518,5 +2522,6 @@ main(int argc, char *argv[]) {
     run();
     cleanup();
     XCloseDisplay(dpy);
-    return EXIT_SUCCESS;
+    fprintf(stderr, "exiting with code: %d\n", exit_code);
+    return exit_code; /* can be changed in global scope */
 }

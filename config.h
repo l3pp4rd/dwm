@@ -1,5 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
+#define EXIT_AND_RESTART 1
+
 /* appearance */
 static const char font[]            = "InconsolataSansMono:size=11";
 
@@ -23,11 +25,13 @@ static const Bool showsystray       = True;     /* False means no systray */
 static const char *tags[] = { "1", "2", "3", "4", "5" };
 
 static const Rule rules[] = {
-    /* class            instance    title       tags mask     isfloating   monitor */
-    { "Gimp",           NULL,       NULL,       1 << 2,       True,        -1 },
-    { "Firefox",        NULL,       NULL,       1 << 0,       False,       -1 },
-    { "Thunderbird",    NULL,       NULL,       1 << 3,       False,       -1 },
-    { "Skype",          NULL,       NULL,       1 << 4,       True,        -1 },
+    /* class            instance    title       tags mask       isfloating   monitor */
+    { "Gimp",           NULL,       NULL,       1 << 2,         True,        -1 },
+    { "URxvt",          "work",     NULL,       1 << 1,         False,       -1 },
+    { "Firefox",        NULL,       NULL,       1 << 0,         False,       -1 },
+    { "VirtualBox",     NULL,       NULL,       1 << 3,         True,        -1 },
+    { "Thunderbird",    NULL,       NULL,       1 << 3,         False,       -1 },
+    { "Skype",          NULL,       NULL,       1 << 4,         True,        -1 },
 };
 
 /* layout(s) */
@@ -63,8 +67,9 @@ static const char *ranger_cmd[]  = { "urxvtc", "-e", "ranger", NULL };
 static const char *touchpad_toggle_cmd[] = { "/bin/zsh", "-c", "/home/gedi/scripts/touchpad_toggle", NULL };
 static const char *print_screen_cmd[] = { "scrot", "%Y-%m-%d-%H%M%S_$wx$h.png", "-e", "mv $f /home/gedi/images/screenshots", NULL };
 static const char *print_screen_area_cmd[] = { "/bin/zsh", "-c", "/home/gedi/scripts/area_screenshot", NULL };
-
-static const char *quit_cmd[]  = { "/bin/zsh", "-c", "killall startdwm", NULL };
+static const char *mpc_next[] = { "mpc", "next", NULL };
+static const char *mpc_prev[] = { "mpc", "prev", NULL };
+static const char *mpc_toggle[] = { "mpc", "toggle", NULL };
 
 static Key keys[] = {
     /* modifier                     key        function        argument */
@@ -110,13 +115,8 @@ static Key keys[] = {
     TAGKEYS(                        XK_3,                       2)
     TAGKEYS(                        XK_4,                       3)
     TAGKEYS(                        XK_5,                       4)
-    TAGKEYS(                        XK_6,                       5)
-    TAGKEYS(                        XK_7,                       6)
-    TAGKEYS(                        XK_8,                       7)
-    TAGKEYS(                        XK_9,                       8)
-    // quit X
-    { MODKEY|ShiftMask,             XK_q,       spawn,          {.v = quit_cmd } }, /* does not quit clean, but restart works perfect */
-    { MODKEY|ControlMask,           XK_r,       quit,           {0} },
+    { MODKEY|ShiftMask,             XK_q,       quit,           {0} }, /* exit with success */
+    { MODKEY|ShiftMask,             XK_r,       quit,           {.i = EXIT_AND_RESTART } }, /* restart dwm */
 };
 
 /* button definitions */
