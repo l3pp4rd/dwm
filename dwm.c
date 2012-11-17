@@ -287,6 +287,7 @@ static int xerror(Display *dpy, XErrorEvent *ee);
 static int xerrordummy(Display *dpy, XErrorEvent *ee);
 static int xerrorstart(Display *dpy, XErrorEvent *ee);
 static void zoom(const Arg *arg);
+static void toggledzen();
 
 /* variables */
 static int exit_code = EXIT_SUCCESS;
@@ -1938,7 +1939,42 @@ togglebar(const Arg *arg) {
         }
         XConfigureWindow(dpy, systray->win, CWY, &wc);
     }
+    toggledzen();
     arrange(selmon);
+}
+
+// simply hide dzen2 status based on selected monitor preference
+void
+toggledzen() {
+    unsigned int i, num;
+    Window d1, d2, *wins = NULL;
+    XWindowAttributes wa;
+    char *name;
+
+    if (XQueryTree(dpy, root, &d1, &d2, &wins, &num)) {
+        for (i = 0; i < num; i++) {
+            if (!XGetWindowAttributes(dpy, wins[i], &wa) || !wa.override_redirect) {
+                continue;
+            }
+            XFetchName(dpy, wins[i], &name);
+            if (name && !strcmp(name, "dzen title")) {
+                XWindowChanges wc;
+                if (selmon->showbar) {
+                    wc.y = 0;
+                    if (!selmon->topbar) {
+                        wc.y = selmon->mh - bh;
+                    }
+                } else {
+                    wc.y = -bh;
+                }
+                XConfigureWindow(dpy, wins[i], CWY, &wc);
+            }
+            XFree(name);
+        }
+        if (wins) {
+            XFree(wins);
+        }
+    }
 }
 
 void
