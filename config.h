@@ -1,6 +1,6 @@
 /* See LICENSE file for copyright and license details. */
 
-#define EXIT_AND_RESTART 1
+#define EXIT_AND_RESTART 5
 
 /* appearance */
 static const char font[]            = "InconsolataSansMono:size=11";
