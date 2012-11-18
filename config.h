@@ -29,6 +29,7 @@ static const Rule rules[] = {
     { "Gimp",           NULL,       NULL,       1 << 2,         True,        -1 },
     { "URxvt",          "work",     NULL,       1 << 1,         False,       -1 },
     { "Firefox",        NULL,       NULL,       1 << 0,         False,       -1 },
+    { "Chromium",       NULL,       NULL,       1 << 0,         False,       -1 },
     { "VirtualBox",     NULL,       NULL,       1 << 3,         True,        -1 },
     { "Thunderbird",    NULL,       NULL,       1 << 3,         False,       -1 },
     { "Skype",          NULL,       NULL,       1 << 4,         True,        -1 },
@@ -64,6 +65,7 @@ static Key keys[] = {
     /* modifier                     key        function        argument */
     // command shortcuts
     { MODKEY,                       XK_r,       spawn,          CMD("/home/gedi/scripts/path_dmenu") },
+    { MODKEY,                       XK_n,       spawn,          CMD("/home/gedi/scripts/notes_dmenu") },
     { MODKEY,                       XK_t,       spawn,          {.v = term_cmd } },
     { MODKEY,                       XK_s,       spawn,          CMD("sudo /usr/sbin/pm-suspend") },
     { MODKEY,                       XK_e,       spawn,          CMD("/home/gedi/scripts/email/check_mailbox.sh /home/gedi/accounts.dat") },
