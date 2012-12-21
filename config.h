@@ -28,7 +28,7 @@ static const Rule rules[] = {
     /* class            instance    title       tags mask       isfloating   monitor */
     { "Gimp",           NULL,       NULL,       1 << 2,         True,        -1 },
     { "URxvt",          "work",     NULL,       1 << 1,         False,       -1 },
-    { "Firefox",        NULL,       NULL,       1 << 0,         False,       -1 },
+    { "Firefox",        NULL,       NULL,       1 << 2,         False,       -1 },
     { "Chromium",       NULL,       NULL,       1 << 0,         False,       -1 },
     { "VirtualBox",     NULL,       NULL,       1 << 3,         True,        -1 },
     { "Thunderbird",    NULL,       NULL,       1 << 3,         False,       -1 },
@@ -69,16 +69,22 @@ static Key keys[] = {
     { MODKEY,                       XK_t,       spawn,          {.v = term_cmd } },
     { MODKEY,                       XK_s,       spawn,          CMD("sudo /usr/sbin/pm-suspend") },
     { MODKEY,                       XK_e,       spawn,          CMD("/home/gedi/scripts/email/check_mailbox.sh /home/gedi/accounts.dat") },
-    { MODKEY,                       XK_a,       spawn,          CMD("urxvtc -e amixer") },
+    { MODKEY,                       XK_a,       spawn,          CMD("urxvtc -e alsamixer") },
+    { MODKEY,                       XK_f,       spawn,          CMD("urxvtc -e ranger") },
     { MODKEY,                       XK_w,       spawn,          CMD("urxvtc -e wicd-curses") },
+    // mpd music playback hotkeys
     { 0,                            XK_F12,     spawn,          CMD("mpc next") },
     { 0,                            XK_F11,     spawn,          CMD("mpc toggle") },
     { 0,                            XK_F10,     spawn,          CMD("mpc prev") },
+    // toggle touchpad
     { 0,                            XK_F9,      spawn,          CMD("/home/gedi/scripts/touchpad_toggle") },
+    // toggle status bar visibility
     { MODKEY,                       XK_b,       togglebar,      {0} },
     // print screen
     { 0,                            XK_Print,   spawn,          {.v = print_screen_cmd } },
     { ControlMask,                  XK_Print,   spawn,          CMD("/home/gedi/scripts/area_screenshot") },
+    // lock screen
+    { MODKEY,                       XK_F5,      spawn,          CMD("slock") },
     // window navigation
     { MODKEY,                       XK_j,       focusstack,     {.i = +1 } },
     { MODKEY,                       XK_Tab,     focusstack,     {.i = +1 } },
