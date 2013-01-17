@@ -67,7 +67,7 @@ static Key keys[] = {
     { MODKEY,                       XK_r,       spawn,          CMD("/home/gedi/scripts/path_dmenu") },
     { MODKEY,                       XK_n,       spawn,          CMD("/home/gedi/scripts/notes_dmenu") },
     { MODKEY,                       XK_t,       spawn,          {.v = term_cmd } },
-    { MODKEY,                       XK_s,       spawn,          CMD("sudo /usr/sbin/pm-suspend") },
+    { MODKEY,                       XK_s,       spawn,          CMD("systemctl suspend") },
     { MODKEY,                       XK_e,       spawn,          CMD("/home/gedi/scripts/email/check_mailbox.sh /home/gedi/accounts.dat") },
     { MODKEY,                       XK_a,       spawn,          CMD("urxvtc -e alsamixer") },
     { MODKEY,                       XK_f,       spawn,          CMD("urxvtc -e ranger") },
