@@ -25,18 +25,23 @@ static const Bool showsystray       = True;     /* False means no systray */
 static const char *tags[] = { "1", "2", "3", "4", "5" };
 
 static const Rule rules[] = {
-    /* class            instance    title       tags mask       isfloating   monitor */
-    { "Gimp",           NULL,       NULL,       1 << 2,         True,        -1 },
-    { "URxvt",          "work",     NULL,       1 << 1,         False,       -1 },
-    { "Firefox",        NULL,       NULL,       1 << 2,         False,       -1 },
-    { "Chromium",       NULL,       NULL,       1 << 0,         False,       -1 },
-    { "VirtualBox",     NULL,       NULL,       1 << 3,         True,        -1 },
-    { "Thunderbird",    NULL,       NULL,       1 << 3,         False,       -1 },
-    { "Skype",          NULL,       NULL,       1 << 4,         True,        -1 },
+    /* class                        instance    title       tags mask   isfloating  iscentered  monitor */
+    { "feh",                        NULL,       NULL,       0,          True,       True,       -1 },
+    { "Firefox",                    NULL,       NULL,       1 << 2,     False,      False,      -1 },
+    { "Chromium",                   NULL,       NULL,       1 << 0,     False,      False,      -1 },
+    { "URxvt",                      "work",     NULL,       1 << 1,     False,      False,      -1 },
+    { "libreoffice-calc",           NULL,       NULL,       1 << 3,     False,      False,      -1 },
+    { "libreoffice-impress",        NULL,       NULL,       1 << 3,     False,      False,      -1 },
+    { "libreoffice-startcenter",    NULL,       NULL,       1 << 3,     False,      False,      -1 },
+    { "libreoffice-writer",         NULL,       NULL,       1 << 3,     False,      False,      -1 },
+    { "Gimp",                       NULL,       NULL,       1 << 4,     True,       False,      -1 },
+    { "VirtualBox",                 NULL,       NULL,       1 << 4,     True,       False,      -1 },
+    { "Thunderbird",                NULL,       NULL,       1 << 2,     False,      False,      -1 },
+    { "Skype",                      NULL,       NULL,       1 << 4,     True,       True,       -1 },
 };
 
 /* layout(s) */
-static const float mfact      = 0.55; /* factor of master area size [0.05..0.95] */
+static const float mfact      = 0.50; /* factor of master area size [0.05..0.95] */
 static const int nmaster      = 1;    /* number of clients in master area */
 static const Bool resizehints = True; /* True means respect size hints in tiled resizals */
 

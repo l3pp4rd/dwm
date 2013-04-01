@@ -110,7 +110,7 @@ struct Client {
     int basew, baseh, incw, inch, maxw, maxh, minw, minh;
     int bw, oldbw;
     unsigned int tags;
-    Bool isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen;
+    Bool isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen, iscentred;
     Client *next;
     Client *snext;
     Monitor *mon;
@@ -172,6 +172,7 @@ typedef struct {
     const char *title;
     unsigned int tags;
     Bool isfloating;
+    Bool iscentred;
     int monitor;
 } Rule;
 
@@ -351,6 +352,7 @@ applyrules(Client *c) {
 
     /* rule matching */
     c->isfloating = c->tags = 0;
+    c->iscentred = 1;
     XGetClassHint(dpy, c->win, &ch);
     class    = ch.res_class ? ch.res_class : broken;
     instance = ch.res_name  ? ch.res_name  : broken;
@@ -362,6 +364,7 @@ applyrules(Client *c) {
         && (!r->instance || strstr(instance, r->instance)))
         {
             c->isfloating = r->isfloating;
+            c->iscentred = r->iscentred;
             c->tags |= r->tags;
             for(m = mons; m && m->num != r->monitor; m = m->next);
             if(m)
@@ -1245,8 +1248,13 @@ manage(Window w, XWindowAttributes *wa) {
         applyrules(c);
     }
     /* geometry */
-    c->x = c->oldx = wa->x;
-    c->y = c->oldy = wa->y;
+    if ((!c->mon->lt[c->mon->sellt]->arrange || c->isfloating) && c->iscentred) {
+        c->x = c->oldx = c->mon->wx + (c->mon->ww / 2 - wa->width / 2);
+        c->y = c->oldy = c->mon->wy + (c->mon->wh / 2 - wa->height / 2);
+    } else {
+        c->x = c->oldx = wa->x;
+        c->y = c->oldy = wa->y;
+    }
     c->w = c->oldw = wa->width;
     c->h = c->oldh = wa->height;
     c->oldbw = wa->border_width;
