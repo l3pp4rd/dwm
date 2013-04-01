@@ -478,7 +478,7 @@ attachstack(Client *c) {
 
 void
 buttonpress(XEvent *e) {
-    unsigned int i, x, click;
+    unsigned int i, x, click, occ = 0;
     Arg arg = {0};
     Client *c;
     Monitor *m;
@@ -486,16 +486,20 @@ buttonpress(XEvent *e) {
 
     click = ClkRootWin;
     /* focus monitor if necessary */
-    if((m = wintomon(ev->window)) && m != selmon) {
+    if ((m = wintomon(ev->window)) && m != selmon) {
         unfocus(selmon->sel, True);
         selmon = m;
         focus(NULL);
     }
-    if(ev->window == selmon->barwin) {
+    if (ev->window == selmon->barwin) {
+        for (c = m->clients; c; c = c->next)
+            occ |= c->tags;
         i = x = 0;
-        do
+        do {
+            if (!(m->tagset[m->seltags] & 1 << i) && !(occ & 1 << i))
+                continue;
             x += TEXTW(tags[i]);
-        while(ev->x >= x && ++i < LENGTH(tags));
+        } while (ev->x >= x && ++i < LENGTH(tags));
         if(i < LENGTH(tags)) {
             click = ClkTagBar;
             arg.ui = 1 << i;
@@ -849,11 +853,12 @@ drawbar(Monitor *m) {
     }
     dc.x = 0;
     for(i = 0; i < LENGTH(tags); i++) {
+        if (!(m->tagset[m->seltags] & 1 << i) && !(occ & 1 << i))
+            continue;
         dc.w = TEXTW(tags[i]);
         col = m->tagset[m->seltags] & 1 << i ? dc.sel : dc.norm;
         drawtext(tags[i], col, urg & 1 << i);
-        drawsquare(m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
-                   occ & 1 << i, urg & 1 << i, col);
+        drawsquare(False, False, urg & 1 << i, col);
         dc.x += dc.w;
     }
     dc.w = blw = TEXTW(m->ltsymbol);
