@@ -2,6 +2,11 @@
 
 #define EXIT_AND_RESTART 5
 
+#define L_MONOCLE 0
+#define L_TILE    1
+#define L_BSTACK  2
+#define L_FLOAT   3
+
 /* appearance */
 static const char font[]            = "InconsolataSansMono:size=11";
 
@@ -21,8 +26,24 @@ static const Bool topbar            = True;     /* False means bottom bar */
 static const unsigned int systrayspacing = 2;   /* systray spacing */
 static const Bool showsystray       = True;     /* False means no systray */
 
+/* layouts */
+static const Layout layouts[] = {
+    /* symbol       arrange function */
+    { "[M]",        monocle },  /* full screen */
+    { "[T]",        tile },     /* tiling */
+    { "[B]",        bstack},    /* bottom stack tiling */
+    { "[F]",        NULL },     /* floating */
+};
+
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5" };
+static const Tag tags[] = {
+    /* name         layout                  mfact   nmaster */
+    { "1:web",      &layouts[L_MONOCLE],    -1,     -1 },
+    { "2:ter",      &layouts[L_BSTACK],     -1,     -1 },
+    { "3:fox",      &layouts[L_TILE],       -1,     -1 },
+    { "4:med",      &layouts[L_FLOAT],      -1,     -1 },
+    { "5:chat",     &layouts[L_FLOAT],      -1,     -1 },
+};
 
 static const Rule rules[] = {
     /* class                        instance    title       tags mask   isfloating  iscentered  monitor */
@@ -40,17 +61,9 @@ static const Rule rules[] = {
     { "Skype",                      NULL,       NULL,       1 << 4,     True,       True,       -1 },
 };
 
-/* layout(s) */
 static const float mfact      = 0.50; /* factor of master area size [0.05..0.95] */
 static const int nmaster      = 1;    /* number of clients in master area */
 static const Bool resizehints = True; /* True means respect size hints in tiled resizals */
-
-static const Layout layouts[] = {
-    /* symbol       arrange function */
-    { "[M]",        monocle },  /* full screen */
-    { "[T]",        tile },     /* tiling */
-    { "[F]",        NULL },     /* floating */
-};
 
 /* key definitions */
 #define MODKEY Mod4Mask
