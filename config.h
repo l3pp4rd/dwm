@@ -101,6 +101,10 @@ static Key keys[] = {
     // print screen
     { 0,                            XK_Print,   spawn,          {.v = print_screen_cmd } },
     { ControlMask,                  XK_Print,   spawn,          CMD("/home/gedi/scripts/area_screenshot") },
+    // keyboard layouts
+    { MODKEY|ShiftMask,             XK_F1,      spawn,          CMD("setxkbmap -layout us") },
+    { MODKEY|ShiftMask,             XK_F2,      spawn,          CMD("setxkbmap -layout lt") },
+    { MODKEY|ShiftMask,             XK_F3,      spawn,          CMD("setxkbmap -layout fr") },
     // lock screen
     { MODKEY,                       XK_F5,      spawn,          CMD("slock") },
     // window navigation
