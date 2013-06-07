@@ -4,8 +4,8 @@ VERSION = 6.1
 # Customize below to fit your system
 
 # paths ~/.dotfiles
-PREFIX = /home/gedi/.dotfiles
-MANPREFIX = ${PREFIX}/man
+PREFIX = /usr/local
+MANPREFIX = ${PREFIX}/share/man
 
 X11INC = /usr/include/X11
 X11LIB = /usr/lib/X11
