@@ -31,16 +31,21 @@ necessary as root):
 
     make clean install
 
-A start script for dwm could look like:
+A start script (lets name it **dwm-personalized**) for dwm could look like:
 
 ``` sh
 #!/bin/sh
 
 DZEN2_STATUS="$HOME/.dotfiles/scripts/dwm_status"
-REBUILD_DWM="$HOME/.dotfiles/compile/dwm-wm/build.sh"
+
+setxkbmap -option ctrl:nocaps & # disable caps lock
+xsetroot -name "" &             # we have dzen2 status bar, set main WM window title to none
+
+if [ !-f "$DZEN2_STATUS" ]; then
+    DZEN2_STATUS="echo 'dzen2 status is unavailable' | dzen2 -x 780 -y 0 -w 710 -h 20 -ta 'r' -p"
+fi
 
 while true; do
-    (sleep 0.5 && volumeicon) &    # volume icon in systray
     (sleep 0.5 && $DZEN2_STATUS) & # run dzen2 status bar, need to make sure wm loads first
 
     # start dwm
@@ -48,15 +53,30 @@ while true; do
     # read exit status
     if [ $? -eq 0 ]; then
         exit 0 # means exit clean => quit
-    elif [ $? -ne 5]; then # exit code for restart is 5
-        mv ~/.dwm.log ~/.dwm.failure # a failure occured, save the log
+    elif [ $? -ne 5 ]; then
+        mv ~/.dwm.log ~/.dwm.failure.log # a failure occured, save the log, never happened so far
     fi
-    # recompile dwm and start again
-    $REBUILD_DWM
+    # dwm should be recompiled if changes were done
     # kill running processes
-    killall volumeicon dwm_status
+    killall dwm_status
 done
 ```
 
-And in your xinitrc, instead of **exec dwm** use **exec startdwm** script
+Do not forget to:
+
+    chmod +x dwm-personalized
+
+And in your xinitrc, instead of **exec dwm** use **exec dwm-personalized** script.
+If you want to use a login manager like **Slim** you will need to create an xsession, at
+**/usr/share/xsession/dwm-personalized.desktop** with contents:
+
+    [Desktop Entry]
+    Encoding=UTF-8
+    Name=Dwm-personalized
+    Comment=Dynamic window manager
+    Exec=dwm-personalized
+    Icon=dwm
+    Type=XSession
+
+Also, your executable **dwm-personalized** should be moved to **/usr/bin** or **/usr/local/bin**.
 
