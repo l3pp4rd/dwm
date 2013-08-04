@@ -90,11 +90,11 @@ static Key keys[] = {
     { MODKEY,                       XK_f,       spawn,          CMD("st -e ranger") },
     { MODKEY,                       XK_w,       spawn,          CMD("st -e wicd-curses") },
     // mpd music playback hotkeys
-    { 0,                            XK_F12,     spawn,          CMD("mpc next") },
-    { 0,                            XK_F11,     spawn,          CMD("mpc toggle") },
-    { 0,                            XK_F10,     spawn,          CMD("mpc prev") },
+    { MODKEY,                       XK_F12,     spawn,          CMD("mpc next") },
+    { MODKEY,                       XK_F11,     spawn,          CMD("mpc toggle") },
+    { MODKEY,                       XK_F10,     spawn,          CMD("mpc prev") },
     // toggle touchpad
-    { 0,                            XK_F9,      spawn,          CMD("/home/gedi/scripts/touchpad_toggle") },
+    { MODKEY,                       XK_F9,      spawn,          CMD("/home/gedi/scripts/touchpad_toggle") },
     // toggle VGA1 screen
     { 0,                            XK_F7,      spawn,          CMD("/home/gedi/scripts/vga_on") },
     // toggle status bar visibility

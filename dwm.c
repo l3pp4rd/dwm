@@ -2576,6 +2576,10 @@ main(int argc, char *argv[]) {
     run();
     cleanup();
     XCloseDisplay(dpy);
-    fprintf(stderr, "exiting with code: %d\n", exit_code);
+    switch (exit_code) {
+        case EXIT_AND_RESTART:
+            fprintf(stderr, "Restarting [dwm] - requested by exit code 5");
+            break;
+    }
     return exit_code; /* can be changed in global scope */
 }
