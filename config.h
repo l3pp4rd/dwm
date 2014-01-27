@@ -86,6 +86,7 @@ static Key keys[] = {
     { MODKEY,                       XK_t,       spawn,          {.v = term_cmd } },
     { MODKEY,                       XK_s,       spawn,          CMD("systemctl suspend") },
     { MODKEY,                       XK_e,       spawn,          CMD("/home/gedi/scripts/email/check_mailbox.sh /home/gedi/accounts.dat") },
+    { MODKEY,                       XK_q,       spawn,          CMD("st -e ncmpc") },
     { MODKEY,                       XK_a,       spawn,          CMD("st -e alsamixer") },
     { MODKEY,                       XK_f,       spawn,          CMD("st -e ranger") },
     { MODKEY,                       XK_w,       spawn,          CMD("st -e wicd-curses") },
