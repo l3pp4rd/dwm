@@ -76,12 +76,12 @@ static const Bool resizehints = True; /* True means respect size hints in tiled 
 
 /* commands */
 static const char *term_cmd[]  = { "st", "-e", "tmux", NULL };
-static const char *print_screen_cmd[] = { "scrot", "%Y-%m-%d-%H%M%S_$wx$h.png", "-e", "mv $f ~/images/screenshots", NULL };
+static const char *print_screen_cmd[] = { "scrot", "%Y-%m-%d-%H%M%S.png", "-e", "mv $f ~/images/screenshots", NULL };
 
 static Key keys[] = {
     /* modifier                     key        function        argument */
     // command shortcuts
-    { MODKEY,                       XK_r,       spawn,          CMD("~/bin/dmenu_run") },
+    { MODKEY,                       XK_r,       spawn,          CMD("dmenu_run") },
     { MODKEY,                       XK_t,       spawn,          {.v = term_cmd } },
     { MODKEY,                       XK_s,       spawn,          CMD("systemctl suspend") },
     { MODKEY,                       XK_e,       spawn,          CMD("mpc toggle") },
@@ -94,12 +94,12 @@ static Key keys[] = {
     { MODKEY,                       XK_F11,     spawn,          CMD("mpc toggle") },
     { MODKEY,                       XK_F10,     spawn,          CMD("mpc prev") },
     // toggle touchpad
-    { MODKEY,                       XK_F9,      spawn,          CMD("~/bin/touchpad_toggle") },
+    { MODKEY,                       XK_F9,      spawn,          CMD("touchpad_toggle") },
     // toggle status bar visibility
     { MODKEY,                       XK_b,       togglebar,      {0} },
     // print screen
     { 0,                            XK_Print,   spawn,          {.v = print_screen_cmd } },
-    { ControlMask,                  XK_Print,   spawn,          CMD("~/bin/area_screenshot") },
+    { ControlMask,                  XK_Print,   spawn,          CMD("area_screenshot") },
     // keyboard layouts
     { MODKEY|ShiftMask,             XK_F1,      spawn,          CMD("setxkbmap -layout us") },
     { MODKEY|ShiftMask,             XK_F2,      spawn,          CMD("setxkbmap -layout lt") },
