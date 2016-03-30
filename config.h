@@ -72,7 +72,7 @@ static const Bool resizehints = True; /* True means respect size hints in tiled 
     { MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
     { MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
 
-#define CMD(cmd) { .v = (const char*[]){ "/bin/zsh", "-c", cmd, NULL } }
+#define CMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
 static const char *term_cmd[]  = { "st", "-e", "tmux", NULL };
@@ -84,28 +84,23 @@ static Key keys[] = {
     { MODKEY,                       XK_r,       spawn,          CMD("dmenu_run") },
     { MODKEY,                       XK_t,       spawn,          {.v = term_cmd } },
     { MODKEY,                       XK_s,       spawn,          CMD("systemctl suspend") },
-    { MODKEY,                       XK_e,       spawn,          CMD("mpc toggle") },
-    { MODKEY,                       XK_q,       spawn,          CMD("st -e ncmpc") },
-    { MODKEY,                       XK_a,       spawn,          CMD("st -e alsamixer") },
-    { MODKEY,                       XK_f,       spawn,          CMD("st -e ranger") },
-    { MODKEY,                       XK_w,       spawn,          CMD("st -e wicd-curses") },
-    // mpd music playback hotkeys
-    { MODKEY,                       XK_F12,     spawn,          CMD("mpc next") },
-    { MODKEY,                       XK_F11,     spawn,          CMD("mpc toggle") },
-    { MODKEY,                       XK_F10,     spawn,          CMD("mpc prev") },
+    { MODKEY,                       XK_a,       spawn,          CMD("pavucontrol") }, // launch pulseaudio control
+    { MODKEY,                       XK_f,       spawn,          CMD("st -e ranger") }, // file manager
     // toggle touchpad
-    { MODKEY,                       XK_F9,      spawn,          CMD("touchpad_toggle") },
+    { MODKEY,                       XK_F9,      spawn,          CMD("touchpad_toggle") }, // exec custom sh script
     // toggle status bar visibility
     { MODKEY,                       XK_b,       togglebar,      {0} },
     // print screen
     { 0,                            XK_Print,   spawn,          {.v = print_screen_cmd } },
-    { ControlMask,                  XK_Print,   spawn,          CMD("area_screenshot") },
+    { ControlMask,                  XK_Print,   spawn,          CMD("area_screenshot") }, // exec custom sh script, uses scrot
     // keyboard layouts
     { MODKEY|ShiftMask,             XK_F1,      spawn,          CMD("setxkbmap -layout us") },
     { MODKEY|ShiftMask,             XK_F2,      spawn,          CMD("setxkbmap -layout lt") },
     { MODKEY|ShiftMask,             XK_F3,      spawn,          CMD("setxkbmap -layout fr") },
+    { MODKEY|ShiftMask,             XK_F4,      spawn,          CMD("setxkbmap -layout ru") },
+    { ControlMask,                  XK_Shift_L, spawn,          CMD("switch_kb_layout") }, // exec custom sh script
     // lock screen
-    { MODKEY,                       XK_F5,      spawn,          CMD("slimlock") },
+    { MODKEY,                       XK_F5,      spawn,          CMD("slimlock") }, // slim screen lock
     // window navigation
     { MODKEY,                       XK_j,       focusstack,     {.i = +1 } },
     { MODKEY,                       XK_Tab,     focusstack,     {.i = +1 } },
