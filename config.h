@@ -98,7 +98,7 @@ static Key keys[] = {
     { MODKEY|ShiftMask,             XK_F2,      spawn,          CMD("setxkbmap -layout lt") },
     { MODKEY|ShiftMask,             XK_F3,      spawn,          CMD("setxkbmap -layout fr") },
     { MODKEY|ShiftMask,             XK_F4,      spawn,          CMD("setxkbmap -layout ru") },
-    { ControlMask,                  XK_Shift_L, spawn,          CMD("switch_kb_layout") }, // exec custom sh script
+    { ShiftMask,                    XK_Tab,     spawn,          CMD("switch_kb_layout") }, // exec custom sh script
     // lock screen
     { MODKEY,                       XK_F5,      spawn,          CMD("slimlock") }, // slim screen lock
     // window navigation
