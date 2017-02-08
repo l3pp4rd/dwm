@@ -40,8 +40,8 @@ static const Tag tags[] = {
     /* name         layout                  mfact   nmaster */
     { "1:web",      &layouts[L_MONOCLE],    -1,     -1 },
     { "2:ter",      &layouts[L_BSTACK],     -1,     -1 },
-    { "3:fox",      &layouts[L_TILE],       -1,     -1 },
-    { "4:med",      &layouts[L_FLOAT],      -1,     -1 },
+    { "3:fox",      &layouts[L_MONOCLE],    -1,     -1 },
+    { "4:med",      &layouts[L_MONOCLE],    -1,     -1 },
     { "5:chat",     &layouts[L_FLOAT],      -1,     -1 },
 };
 
