@@ -58,6 +58,7 @@ static const Rule rules[] = {
     { "VirtualBox",                 NULL,       NULL,       1 << 4,     True,       False,      -1 },
     { "Thunderbird",                NULL,       NULL,       1 << 2,     False,      False,      -1 },
     { "Skype",                      NULL,       NULL,       1 << 4,     True,       True,       -1 },
+    { NULL,                         NULL,       "Slack Call Minipanel",       1 << 4,     True,       True,       -1 },
 };
 
 static const float mfact      = 0.50; /* factor of master area size [0.05..0.95] */
