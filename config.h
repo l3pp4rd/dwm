@@ -83,6 +83,7 @@ static Key keys[] = {
     /* modifier                     key        function        argument */
     // command shortcuts
     { MODKEY,                       XK_r,       spawn,          CMD("dmenu_run") },
+    { MODKEY,                       XK_z,       spawn,          CMD("dmenu_surf") },
     { MODKEY,                       XK_t,       spawn,          {.v = term_cmd } },
     { MODKEY,                       XK_s,       spawn,          CMD("systemctl suspend") },
     { MODKEY,                       XK_a,       spawn,          CMD("pavucontrol") }, // launch pulseaudio control
