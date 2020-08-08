@@ -76,7 +76,7 @@ static const Bool resizehints = True; /* True means respect size hints in tiled 
 #define CMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-static const char *term_cmd[]  = { "st", "-e", "tmux", NULL };
+static const char *term_cmd[]  = { "alacritty", "-e", "tmux", NULL };
 static const char *print_screen_cmd[] = { "scrot", "%Y-%m-%d-%H%M%S.png", "-e", "mv $f ~/images/screenshots", NULL };
 
 static Key keys[] = {
@@ -87,7 +87,7 @@ static Key keys[] = {
     { MODKEY,                       XK_t,       spawn,          {.v = term_cmd } },
     { MODKEY,                       XK_s,       spawn,          CMD("systemctl suspend") },
     { MODKEY,                       XK_a,       spawn,          CMD("pavucontrol") }, // launch pulseaudio control
-    { MODKEY,                       XK_f,       spawn,          CMD("st -e ranger") }, // file manager
+    { MODKEY,                       XK_f,       spawn,          CMD("alacritty -e ranger") }, // file manager
     // toggle touchpad
     { MODKEY,                       XK_F9,      spawn,          CMD("touchpad_toggle") }, // exec custom sh script
     // toggle status bar visibility
