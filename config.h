@@ -40,9 +40,13 @@ static const Tag tags[] = {
     /* name         layout                  mfact   nmaster */
     { "1:web",      &layouts[L_MONOCLE],    -1,     -1 },
     { "2:ter",      &layouts[L_BSTACK],     -1,     -1 },
-    { "3:fox",      &layouts[L_MONOCLE],    -1,     -1 },
-    { "4:med",      &layouts[L_MONOCLE],    -1,     -1 },
-    { "5:chat",     &layouts[L_FLOAT],      -1,     -1 },
+    { "3:idea",     &layouts[L_MONOCLE],    -1,     -1 },
+    { "4:chat",     &layouts[L_MONOCLE],    -1,     -1 },
+    { "5:ex1",      &layouts[L_FLOAT],      -1,     -1 },
+    { "6:ex2",      &layouts[L_MONOCLE],    -1,     -1 },
+    { "7:ex3",      &layouts[L_MONOCLE],    -1,     -1 },
+    { "8:ex4",      &layouts[L_MONOCLE],    -1,     -1 },
+    { "9:ex5",      &layouts[L_MONOCLE],    -1,     -1 },
 };
 
 static const Rule rules[] = {
