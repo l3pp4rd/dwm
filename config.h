@@ -52,17 +52,9 @@ static const Tag tags[] = {
 static const Rule rules[] = {
     /* class                        instance    title       tags mask   isfloating  iscentered  monitor */
     { "feh",                        NULL,       NULL,       0,          True,       True,       -1 },
-    { "Firefox",                    NULL,       NULL,       1 << 2,     False,      False,      -1 },
-    { "Chromium",                   NULL,       NULL,       1 << 0,     False,      False,      -1 },
-    { "libreoffice-calc",           NULL,       NULL,       1 << 3,     False,      False,      -1 },
-    { "libreoffice-impress",        NULL,       NULL,       1 << 3,     False,      False,      -1 },
-    { "libreoffice-startcenter",    NULL,       NULL,       1 << 3,     False,      False,      -1 },
-    { "libreoffice-writer",         NULL,       NULL,       1 << 3,     False,      False,      -1 },
-    { "Gimp",                       NULL,       NULL,       1 << 4,     True,       False,      -1 },
-    { "VirtualBox",                 NULL,       NULL,       1 << 4,     True,       False,      -1 },
-    { "Thunderbird",                NULL,       NULL,       1 << 2,     False,      False,      -1 },
-    { "Skype",                      NULL,       NULL,       1 << 4,     True,       True,       -1 },
-    { NULL,                         NULL,       "Slack Call Minipanel",       1 << 4,     True,       True,       -1 },
+    { "Gimp",                       NULL,       NULL,       0,          True,       False,      -1 },
+    { "VirtualBox",                 NULL,       NULL,       0,          True,       False,      -1 },
+    { "Skype",                      NULL,       NULL,       0,          True,       True,       -1 },
 };
 
 static const float mfact      = 0.50; /* factor of master area size [0.05..0.95] */
@@ -137,6 +129,10 @@ static Key keys[] = {
     TAGKEYS(                        XK_3,                       2)
     TAGKEYS(                        XK_4,                       3)
     TAGKEYS(                        XK_5,                       4)
+    TAGKEYS(                        XK_6,                       5)
+    TAGKEYS(                        XK_7,                       6)
+    TAGKEYS(                        XK_8,                       7)
+    TAGKEYS(                        XK_9,                       8)
     { MODKEY|ShiftMask,             XK_q,       quit,           {0} }, /* exit with success */
     { MODKEY|ShiftMask,             XK_r,       quit,           {.i = EXIT_AND_RESTART } }, /* restart dwm */
 };
