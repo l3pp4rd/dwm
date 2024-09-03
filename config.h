@@ -97,7 +97,7 @@ static Key keys[] = {
     { MODKEY|ShiftMask,             XK_F3,      spawn,          CMD("setxkbmap -layout fr") },
     { MODKEY|ShiftMask,             XK_F4,      spawn,          CMD("setxkbmap -layout ru") },
     // lock screen
-    { MODKEY,                       XK_F5,      spawn,          CMD("setxkbmap -layout us;lxdm -c USER_SWITCH") }, // screen lock
+    { MODKEY,                       XK_F5,      spawn,          CMD("setxkbmap -layout us;i3lock") }, // screen lock
     // window navigation
     { MODKEY,                       XK_j,       focusstack,     {.i = +1 } },
     { MODKEY,                       XK_Tab,     focusstack,     {.i = +1 } },
