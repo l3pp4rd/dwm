@@ -78,6 +78,8 @@ static const char *print_screen_cmd[] = { "scrot", "%Y-%m-%d-%H%M%S.png", "-e", 
 static Key keys[] = {
     /* modifier                     key        function        argument */
     // command shortcuts
+    { MODKEY,                       XK_d,       spawn,          CMD("dunstctl close all") },
+    { MODKEY,                       XK_w,       spawn,          CMD("mynet") },
     { MODKEY,                       XK_r,       spawn,          CMD("dmenu_run") },
     { MODKEY,                       XK_z,       spawn,          CMD("dmenu_surf") },
     { MODKEY,                       XK_t,       spawn,          {.v = term_cmd } },

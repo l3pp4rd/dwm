@@ -11,8 +11,8 @@ X11INC = /usr/include/X11
 X11LIB = /usr/lib/X11
 
 # Xinerama, comment if you don't want it
-# XINERAMALIBS  = -lXinerama
-# XINERAMAFLAGS = -DXINERAMA
+XINERAMALIBS  = -lXinerama
+XINERAMAFLAGS = -DXINERAMA
 
 # Xft
 XFTLIBS = `pkg-config --libs xft`
